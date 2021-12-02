@@ -24,4 +24,5 @@ public abstract class AnimatedEntitiy extends Entity {
         chooseImage();
         if(_animate < MAX_ANIMATE) _animate++; else _animate = 0;
     }
+
 }

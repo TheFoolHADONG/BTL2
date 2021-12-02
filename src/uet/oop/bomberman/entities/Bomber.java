@@ -18,12 +18,13 @@ import static uet.oop.bomberman.graphics.Sprite.bomb;
 
 
 public class Bomber extends AnimatedEntitiy {
-    private boolean die = false;
+
     private int time = BombermanGame.FPS*3;
 
     private List<Bomb> bombs = new ArrayList<>();
 
     private boolean up, down, left, right;
+    private boolean die = false;
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -115,14 +116,15 @@ public class Bomber extends AnimatedEntitiy {
 
     public boolean checkDeath(int x, int y) {
         if(BombermanGame.getFlameAt(x,y)) return true;
+        if(BombermanGame.getMobAt(x,y)) return true;
         return false;
     }
 
     public void IsDeath() {
         if(checkDeath((int)getX(),(int)getY())) die = true;
-        if(checkDeath((int)(getX()+0.75),(int)getY())) die = true;
-        if(checkDeath((int)getX(),(int)(getY()+1))) die = true;
-        if(checkDeath((int)(getX()+0.75),(int)(getY()+1))) die = true;
+        if(checkDeath((int)(getX()+0.7),(int)getY())) die = true;
+        if(checkDeath((int)getX(),(int)(getY()+0.95))) die = true;
+        if(checkDeath((int)(getX()+0.7),(int)(getY()+0.95))) die = true;
     }
 
     public void chooseImageDeath(int time) {
@@ -134,7 +136,7 @@ public class Bomber extends AnimatedEntitiy {
 
     public void placeBomb() {
         Bomb bomb =new Bomb((int)Math.round(getX()), (int)Math.round(getY()), Sprite.bomb.getFxImage());
-            if(BombermanGame.getAt((int)Math.round(getX()), (int)Math.round(getY())) == null)
+            if(BombermanGame.getAt((int)Math.round(getX()), (int)Math.round(getY())) == null && !die)
                 BombermanGame.entities.add(bomb);
     }
 }

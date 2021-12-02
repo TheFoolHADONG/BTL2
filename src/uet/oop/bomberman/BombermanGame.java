@@ -23,7 +23,7 @@ public class BombermanGame extends Application {
 
     public static final int FPS = 165;
 
-    public static final int WIDTH = 40;
+    public static final int WIDTH = 20;
     public static final int HEIGHT = 15;
     
     private GraphicsContext gc;
@@ -58,9 +58,9 @@ public class BombermanGame extends Application {
         return false;
     }
 
-    public static boolean getBombAt(int x, int y) {
+    public static boolean getMobAt(int x, int y) {
         for(Entity entity : entities) {
-            if((int)entity.getX() == x && (int)entity.getY() == y && entity instanceof Bomb)
+            if((int)entity.getX() == x && (int)entity.getY() == y && entity instanceof Mob)
                 return true;
         }
         return false;
@@ -127,9 +127,19 @@ public class BombermanGame extends Application {
 
          */
 
-        Brick brick = new Brick(5,5 ,Sprite.brick.getFxImage());
-        Brick brick2 = new Brick(2,4 ,Sprite.brick.getFxImage());
-        Brick brick3 = new Brick(2,3,Sprite.brick.getFxImage());
+        Brick brick2 = new Brick(5,2 ,Sprite.brick.getFxImage());
+        Brick brick3 = new Brick(5,3,Sprite.brick.getFxImage());
+        Brick brick4 = new Brick(3,5 ,Sprite.brick.getFxImage());
+        Brick brick5 = new Brick(2,5,Sprite.brick.getFxImage());
+
+        Entity portal = new Portal(5,5,Sprite.portal.getFxImage());
+
+        Entity balloom = new Balloom(5,7,Sprite.balloom_left1.getFxImage());
+        Entity doll = new Doll(7,7,Sprite.balloom_left1.getFxImage());
+        Entity kondoria = new Kondoria(9,7,Sprite.balloom_left1.getFxImage());
+        Entity minvo = new Minvo(11,7,Sprite.balloom_left1.getFxImage());
+        Entity oneal = new Oneal(13,7,Sprite.balloom_left1.getFxImage());
+
 
 
         createMap();
@@ -163,9 +173,18 @@ public class BombermanGame extends Application {
         timer.start();
 
 
-        entities.add(brick);
         entities.add(brick2);
         entities.add(brick3);
+        entities.add(brick4);
+        entities.add(brick5);
+
+        entities.add(portal);
+
+        entities.add(balloom);
+        entities.add(doll);
+        entities.add(kondoria);
+        entities.add(minvo);
+        entities.add(oneal);
 
 
         /*
