@@ -2,9 +2,15 @@ package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
 
+import static uet.oop.bomberman.BombermanGame.FPS;
+
 public abstract class AnimatedEntitiy extends Entity {
     protected int _animate = 0;
     protected final int MAX_ANIMATE = 7500;
+
+    public final double SPEED = 165/FPS;
+
+    public final double MOVECROSSSPEED = SPEED / Math.sqrt(2);
 
     public AnimatedEntitiy(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);

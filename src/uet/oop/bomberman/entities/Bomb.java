@@ -12,8 +12,6 @@ import java.util.ListIterator;
 public class Bomb extends AnimatedEntitiy {
     protected double _timeToExplode = BombermanGame.FPS*2;
 
-    protected boolean isExploded = false;
-
     public Bomb(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
     }
@@ -33,7 +31,6 @@ public class Bomb extends AnimatedEntitiy {
 
     public void explode() {
         makeFlames();
-        isExploded = true;
         remove = true;
     }
 
@@ -53,10 +50,6 @@ public class Bomb extends AnimatedEntitiy {
         }
     }
 
-
-    public boolean isExploded() {
-        return isExploded;
-    }
 
     @Override
     public void chooseImage() {

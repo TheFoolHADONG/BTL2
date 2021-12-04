@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import uet.oop.bomberman.BombermanGame;
+import uet.oop.bomberman.Sound.SoundPlayer;
 import uet.oop.bomberman.graphics.Sprite;
 
 
@@ -14,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.scene.input.KeyCode.*;
+import static uet.oop.bomberman.Sound.SoundPlayer.stage_theme;
+import static uet.oop.bomberman.Sound.SoundPlayer.theme;
 import static uet.oop.bomberman.graphics.Sprite.bomb;
 
 
@@ -21,7 +24,7 @@ public class Bomber extends AnimatedEntitiy {
 
     private int time = BombermanGame.FPS*3;
 
-    private List<Bomb> bombs = new ArrayList<>();
+    private int maxBombs = 1;
 
     private boolean up, down, left, right;
     private boolean die = false;
@@ -38,6 +41,9 @@ public class Bomber extends AnimatedEntitiy {
             move();
             IsDeath();
         } else {
+            if(!BombermanGame.endgame) {
+                SoundPlayer.playLoop(stage_theme);
+            }
             BombermanGame.endgame = true;
             if(time>0) {
                 time--;
@@ -75,14 +81,14 @@ public class Bomber extends AnimatedEntitiy {
     }
 
     private boolean canhmove() {
-        if (up) return !checkBlock((int)(getX()+0.75), (int)(getY()-0.05)) && !checkBlock((int)getX(), (int)(getY()-0.05));
-        if (down) return !checkBlock((int)(getX()+0.75), (int)(getY()+1)) && !checkBlock((int)(getX()), (int)(getY()+1));
+        if (up) return !checkBlock((int)(getX()+0.7), (int)(getY()+0.15)) && !checkBlock((int)getX(), (int)(getY()+0.15));
+        if (down) return !checkBlock((int)(getX()+0.7), (int)(getY()+1)) && !checkBlock((int)(getX()), (int)(getY()+1));
         return true;
     }
 
     private boolean canvmove() {
-        if (left) return !checkBlock((int)(getX()-0.05), (int)getY()) && !checkBlock((int)(getX()-0.05), (int)(getY()+0.95));
-        if (right) return !checkBlock((int)(getX()+0.8), (int)getY()) && !checkBlock((int)(getX()+0.8), (int)(getY()+0.95));
+        if (left) return !checkBlock((int)(getX()-0.05), (int)(getY()+0.2)) && !checkBlock((int)(getX()-0.05), (int)(getY()+0.95));
+        if (right) return !checkBlock((int)(getX()+0.8), (int)(getY()+0.2)) && !checkBlock((int)(getX()+0.8), (int)(getY()+0.95));
         return true;
     }
 
@@ -121,8 +127,8 @@ public class Bomber extends AnimatedEntitiy {
     }
 
     public void IsDeath() {
-        if(checkDeath((int)getX(),(int)getY())) die = true;
-        if(checkDeath((int)(getX()+0.7),(int)getY())) die = true;
+        if(checkDeath((int)getX(),(int)(getY()+0.25))) die = true;
+        if(checkDeath((int)(getX()+0.7),(int)(getY()+0.25))) die = true;
         if(checkDeath((int)getX(),(int)(getY()+0.95))) die = true;
         if(checkDeath((int)(getX()+0.7),(int)(getY()+0.95))) die = true;
     }

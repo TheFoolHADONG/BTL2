@@ -9,8 +9,12 @@ public abstract class Mob extends AnimatedEntitiy {
 
     protected int timedie = BombermanGame.FPS*2;
 
-    protected boolean up, down, left =  true, right;
+    protected boolean up, down, left , right;
     protected boolean die = false;
+
+    public boolean isDie() {
+        return die;
+    }
 
     public Mob(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);

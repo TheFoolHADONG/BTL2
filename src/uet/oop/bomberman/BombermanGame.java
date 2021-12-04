@@ -10,30 +10,39 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import uet.oop.bomberman.LevelLoader.LevelLoader;
+import uet.oop.bomberman.Sound.SoundPlayer;
 import uet.oop.bomberman.entities.*;
 import uet.oop.bomberman.graphics.Sprite;
-
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static uet.oop.bomberman.Sound.SoundPlayer.stage_theme;
 
 public class BombermanGame extends Application {
 
     public static final int FPS = 165;
 
-    public static final int WIDTH = 20;
-    public static final int HEIGHT = 15;
+
+    public double x;
     
     private GraphicsContext gc;
     private Canvas canvas;
+
+    private Bomber bomberman;
 
     public static List<Entity> entities = new ArrayList<>();
     public static List<Flame> flames= new ArrayList<>();
     public static List<Entity> stillObjects = new ArrayList<>();
 
     public static boolean endgame = false;
+
 
     public static Entity getAt(int x, int y) {
         for(Entity entity : entities) {
@@ -60,7 +69,7 @@ public class BombermanGame extends Application {
 
     public static boolean getMobAt(int x, int y) {
         for(Entity entity : entities) {
-            if((int)entity.getX() == x && (int)entity.getY() == y && entity instanceof Mob)
+            if((int)entity.getX() == x && (int)entity.getY() == y && entity instanceof Mob && !((Mob) entity).isDie())
                 return true;
         }
         return false;
@@ -86,8 +95,10 @@ public class BombermanGame extends Application {
 
     @Override
     public void start(Stage stage) {
+        LevelLoader levelLoader = new LevelLoader();
+        levelLoader.loadLevel(1 ,entities,stillObjects);
         // Tao Canvas
-        canvas = new Canvas(Sprite.SCALED_SIZE * WIDTH, Sprite.SCALED_SIZE * HEIGHT);
+        canvas = new Canvas(levelLoader.getWidth(), levelLoader.getHeight());
         gc = canvas.getGraphicsContext2D();
 
         // Tao root container
@@ -97,52 +108,21 @@ public class BombermanGame extends Application {
         // Tao scene
         Scene scene = new Scene(root);
 
+
+
+
         // Them scene vao stage
         stage.setScene(scene);
+        stage.setTitle("Bomberman by");
+        stage.setWidth(levelLoader.getHeight());
         stage.show();
 
-        Bomber bomberman = new Bomber(1, 1, Sprite.player_right.getFxImage());
-
-        /*
-        Bomb bombtest = new Bomb(2, 2, Sprite.bomb.getFxImage());
-        Flame flameinside = new Flame(4,4,Sprite.bomb_exploded.getFxImage(),0);
-        Flame flametop = new Flame(4,2,Sprite.explosion_vertical_top_last.getFxImage(),1);
-        Flame flamedown = new Flame(4,6,Sprite.explosion_vertical_down_last.getFxImage(),2);
-        Flame flameleft = new Flame(2,4,Sprite.explosion_horizontal_left_last.getFxImage(),3);
-        Flame flameright = new Flame(6,4,Sprite.explosion_horizontal_right_last.getFxImage(),4);
-        Flame flameh1 = new Flame(3,4,Sprite.explosion_horizontal.getFxImage(),6);
-        Flame flameh2 = new Flame(5,4,Sprite.explosion_horizontal.getFxImage(),6);
-        Flame flamev1 = new Flame(4,3,Sprite.explosion_vertical.getFxImage(),5);
-        Flame flamev2 = new Flame(4,5,Sprite.explosion_vertical.getFxImage(),5);
-        List<Flame> flames =  new ArrayList<Flame>();
-        flames.add(flametop);
-        flames.add(flamedown);
-        flames.add(flameleft);
-        flames.add(flameright);
-        flames.add(flameinside);
-        flames.add(flamev1);
-        flames.add(flamev2);
-        flames.add(flameh1);
-        flames.add(flameh2);
-
-         */
-
-        Brick brick2 = new Brick(5,2 ,Sprite.brick.getFxImage());
-        Brick brick3 = new Brick(5,3,Sprite.brick.getFxImage());
-        Brick brick4 = new Brick(3,5 ,Sprite.brick.getFxImage());
-        Brick brick5 = new Brick(2,5,Sprite.brick.getFxImage());
-
-        Entity portal = new Portal(5,5,Sprite.portal.getFxImage());
-
-        Entity balloom = new Balloom(5,7,Sprite.balloom_left1.getFxImage());
-        Entity doll = new Doll(7,7,Sprite.balloom_left1.getFxImage());
-        Entity kondoria = new Kondoria(9,7,Sprite.balloom_left1.getFxImage());
-        Entity minvo = new Minvo(11,7,Sprite.balloom_left1.getFxImage());
-        Entity oneal = new Oneal(13,7,Sprite.balloom_left1.getFxImage());
+        // Them am thanh stage theme
+        SoundPlayer.playLoop(stage_theme);
 
 
 
-        createMap();
+        bomberman = levelLoader.getPlayer();
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -165,6 +145,7 @@ public class BombermanGame extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
+
                 render();
                 update();
             }
@@ -173,42 +154,8 @@ public class BombermanGame extends Application {
         timer.start();
 
 
-        entities.add(brick2);
-        entities.add(brick3);
-        entities.add(brick4);
-        entities.add(brick5);
-
-        entities.add(portal);
-
-        entities.add(balloom);
-        entities.add(doll);
-        entities.add(kondoria);
-        entities.add(minvo);
-        entities.add(oneal);
-
-
-        /*
-        entities.addAll(flames);
-        entities.add(bombtest);
-
-         */
 
         entities.add(bomberman);
-    }
-
-    public void createMap() {
-        for (int i = 0; i < WIDTH; i++) {
-            for (int j = 0; j < HEIGHT; j++) {
-                Entity object;
-                if (j == 0 || j == HEIGHT - 1 || i == 0 || i == WIDTH - 1) {
-                    object = new Wall(i, j, Sprite.wall.getFxImage());
-                }
-                else {
-                    object = new Grass(i, j, Sprite.grass.getFxImage());
-                }
-                stillObjects.add(object);
-            }
-        }
     }
 
     private boolean n = false;
@@ -221,9 +168,23 @@ public class BombermanGame extends Application {
     }
 
     public void render() {
+        checkCamera();
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         stillObjects.forEach(g -> g.render(gc));
         entities.forEach(g -> g.render(gc));
         flames.forEach(g -> g.render(gc));
+    }
+
+    public void checkCamera() {
+
+        if(bomberman.getXPixel() > x + (canvas.getHeight() / 2) - 1 && x < canvas.getWidth() - canvas.getHeight() + Sprite.SCALED_SIZE/2) {
+            gc.translate(-1,0);
+            x += 1;
+        }
+
+        if(bomberman.getXPixel() < x + (canvas.getHeight() / 2) - 1 && x > 0) {
+            gc.translate(1,0);
+            x -= 1;
+        }
     }
 }

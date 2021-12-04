@@ -21,10 +21,6 @@ public abstract class Entity {
     protected Image img;
 
 
-    public static final double SPEED = 165/FPS;
-
-    public static final double MOVECROSSSPEED = SPEED / Math.sqrt(2);
-
     public boolean isRemove() {
         return remove;
     }
@@ -35,8 +31,8 @@ public abstract class Entity {
         return (double)x/Sprite.SCALED_SIZE;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public int getXPixel() {
+        return x;
     }
 
 
@@ -44,8 +40,8 @@ public abstract class Entity {
         return (double) y/Sprite.SCALED_SIZE;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public int getYPixel() {
+        return y;
     }
 
     public Image getImg() {
