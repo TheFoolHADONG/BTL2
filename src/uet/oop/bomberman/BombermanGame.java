@@ -593,8 +593,6 @@ public class BombermanGame extends Application {
 
     public FlowPane volumeFlowPane() {
         FlowPane flowPane = new FlowPane();
-        FlowPane flowPane1 = new FlowPane();
-        FlowPane flowPane2 = new FlowPane();
 
         Slider themeSlider = new Slider();
         themeSlider.setMaxWidth(SCALED_SIZE*5);
@@ -623,10 +621,8 @@ public class BombermanGame extends Application {
             }
         });
 
-        flowPane1.getChildren().addAll(themeSlider);
-        flowPane2.getChildren().addAll(soundeffectSlider);
-        flowPane.getChildren().addAll(flowPane1, flowPane2);
-        flowPane.setAlignment(Pos.CENTER_LEFT);
+        flowPane.getChildren().addAll(themeSlider, soundeffectSlider);
+        flowPane.setHgap(10);
         return flowPane;
     }
 
