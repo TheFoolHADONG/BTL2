@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static javafx.scene.input.KeyCode.*;
+import static uet.oop.bomberman.BombermanGame.*;
 import static uet.oop.bomberman.Sound.SoundPlayer.stage_theme;
 import static uet.oop.bomberman.Sound.SoundPlayer.theme;
 import static uet.oop.bomberman.graphics.Sprite.bomb;
@@ -28,6 +29,7 @@ public class Bomber extends AnimatedEntitiy {
 
     private boolean up, down, left, right;
     private boolean die = false;
+    private boolean music = false;
 
     public Bomber(int x, int y, Image img) {
         super(x, y, img);
@@ -40,16 +42,21 @@ public class Bomber extends AnimatedEntitiy {
             animate();
             move();
             IsDeath();
-        } else {
-            if(!BombermanGame.endgame) {
-                SoundPlayer.playLoop(stage_theme);
+            if(win) {
+                if(getPortalAt(Math.round(getX()),Math.round(getY()))) iswin = true;
             }
-            BombermanGame.endgame = true;
+        } else {
+            if(!music) {
+                theme.stop();
+                //SoundPlayer.play(stage_theme);
+                music = true;
+            }
             if(time>0) {
                 time--;
                 chooseImageDeath(time);
                 animate();
             } else {
+                lose = true;
                 remove = true;
             }
         }
@@ -87,14 +94,16 @@ public class Bomber extends AnimatedEntitiy {
     }
 
     private boolean canvmove() {
-        if (left) return !checkBlock((int)(getX()-0.05), (int)(getY()+0.2)) && !checkBlock((int)(getX()-0.05), (int)(getY()+0.95));
-        if (right) return !checkBlock((int)(getX()+0.8), (int)(getY()+0.2)) && !checkBlock((int)(getX()+0.8), (int)(getY()+0.95));
+        if (left) return !checkBlock((int)(getX()-0.05), (int)(getY()+0.2)) && !checkBlock((int)(getX()-0.05), (int)(getY()+0.99));
+        if (right) return !checkBlock((int)(getX()+0.8), (int)(getY()+0.2)) && !checkBlock((int)(getX()+0.8), (int)(getY()+0.99));
         return true;
     }
 
-    private boolean checkBlock(int x,int y) {
+
+    public boolean checkBlock(int x,int y) {
         if(BombermanGame.getBrickAt(x,y)) return true;
-        if(BombermanGame.getWallkAt(x,y)) return true;
+        if(BombermanGame.getWallAt(x,y)) return true;
+        if(BombermanGame.getPlayerBombAt(x,y)) return true;
         return false;
     }
 
@@ -120,17 +129,9 @@ public class Bomber extends AnimatedEntitiy {
         }
     }
 
-    public boolean checkDeath(int x, int y) {
-        if(BombermanGame.getFlameAt(x,y)) return true;
-        if(BombermanGame.getMobAt(x,y)) return true;
-        return false;
-    }
-
     public void IsDeath() {
-        if(checkDeath((int)getX(),(int)(getY()+0.25))) die = true;
-        if(checkDeath((int)(getX()+0.7),(int)(getY()+0.25))) die = true;
-        if(checkDeath((int)getX(),(int)(getY()+0.95))) die = true;
-        if(checkDeath((int)(getX()+0.7),(int)(getY()+0.95))) die = true;
+        if(intersects(BombermanGame.getAllMob())) die = true;
+        if(intersects(flames)) die = true;
     }
 
     public void chooseImageDeath(int time) {
@@ -139,10 +140,9 @@ public class Bomber extends AnimatedEntitiy {
         this.setImg(sprite.getFxImage());
     }
 
-
     public void placeBomb() {
         Bomb bomb =new Bomb((int)Math.round(getX()), (int)Math.round(getY()), Sprite.bomb.getFxImage());
-            if(BombermanGame.getAt((int)Math.round(getX()), (int)Math.round(getY())) == null && !die)
+            if(!BombermanGame.getBombAt((int)Math.round(getX()), (int)Math.round(getY())) && !die)
                 BombermanGame.entities.add(bomb);
     }
 }

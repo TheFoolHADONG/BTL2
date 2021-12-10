@@ -17,19 +17,19 @@ public class Balloom extends Mob {
     @Override
     public void chooseImage() {
         if(!die) {
-            if (up) {
+            if (direction == 0) {
                 Sprite sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, _animate, FPS/2);
                 this.setImg(sprite.getFxImage());
             }
-            if (down) {
+            if (direction == 2) {
                 Sprite sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, _animate, FPS/2);
                 this.setImg(sprite.getFxImage());
             }
-            if (left) {
+            if (direction == 3) {
                 Sprite sprite = Sprite.movingSprite(Sprite.balloom_left1, Sprite.balloom_left2, Sprite.balloom_left3, _animate, FPS/2);
                 this.setImg(sprite.getFxImage());
             }
-            if (right) {
+            if (direction == 1) {
                 Sprite sprite = Sprite.movingSprite(Sprite.balloom_right1, Sprite.balloom_right2, Sprite.balloom_right3, _animate, FPS/2);
                 this.setImg(sprite.getFxImage());
             }
@@ -37,15 +37,19 @@ public class Balloom extends Mob {
     }
 
     private int time = 0;
-    private int g = new Random().nextInt(4);
 
     @Override
     public void update() {
         if(!die) {
             animate();
+            calculateMove();
             IsDeath();
         } else {
             setImg(Sprite.balloom_dead.getFxImage());
+            if(!scored) {
+                BombermanGame.score += 100;
+                scored = true;
+            }
             if(timedie>0) {
                 timedie--;
             } else remove = true;

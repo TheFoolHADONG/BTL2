@@ -14,7 +14,7 @@ public class LevelLoader {
     private int playerx, playery;
 
     public Bomber getPlayer() {
-        return new Bomber(playerx, playerx, Sprite.player_left.getFxImage());
+        return new Bomber(playerx, playery, Sprite.player_right.getFxImage());
     }
 
     public int getWidth() {
@@ -56,7 +56,7 @@ public class LevelLoader {
                         break;
                     // Thêm Portal
                     case 'x':
-                        entities.add(new Portal(j, i, Sprite.portal.getFxImage()));
+                        stillObjects.add(new Portal(j, i, Sprite.portal.getFxImage()));
                         entities.add(new Brick(j, i, Sprite.brick.getFxImage()));
                         break;
                     // Thêm brick
@@ -77,13 +77,18 @@ public class LevelLoader {
                     case '2':
                         entities.add(new Oneal(j, i, Sprite.oneal_left1.getFxImage()));
                         break;
-            //        // Thêm doll
-            //        case '3':
-            //            _board.addCharacter(new Doll(Coordinates.tileToPixel(x), Coordinates.tileToPixel(y) + Game.TILES_SIZE, _board));
-            //            _board.addEntity(x + y * _width, new Grass(x, y, Sprite.grass));
-            //            break;
-            //        // Thêm oneal
-            //        // Thêm BomItem
+                    // Thêm doll
+                    case '3':
+                        entities.add(new Doll(j, i, Sprite.doll_left1.getFxImage()));
+                        break;
+                    case '4':
+                        entities.add(new Kondoria(j, i, Sprite.kondoria_left1.getFxImage()));
+                        break;
+                    case '5':
+                        entities.add(new Minvo(j, i, Sprite.minvo_left1.getFxImage()));
+                        break;
+
+            //       Thêm BomItem
             //        case 'b':
             //            LayeredEntity layer = new LayeredEntity(x, y,
             //                    new Grass(x, y, Sprite.grass),

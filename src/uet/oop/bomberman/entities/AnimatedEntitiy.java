@@ -1,6 +1,7 @@
 package uet.oop.bomberman.entities;
 
 import javafx.scene.image.Image;
+import uet.oop.bomberman.BombermanGame;
 
 import static uet.oop.bomberman.BombermanGame.FPS;
 
@@ -30,5 +31,6 @@ public abstract class AnimatedEntitiy extends Entity {
         chooseImage();
         if(_animate < MAX_ANIMATE) _animate++; else _animate = 0;
     }
+
 
 }

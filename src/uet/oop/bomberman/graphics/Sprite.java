@@ -258,8 +258,8 @@ public class Sprite {
             }
         }
         Image input = new ImageView(wr).getImage();
-        return resample(input, SCALED_SIZE / DEFAULT_SIZE);
-    }
+		return resample(input, SCALED_SIZE / DEFAULT_SIZE);
+	}
 
 	private Image resample(Image input, int scaleFactor) {
 		final int W = (int) input.getWidth();

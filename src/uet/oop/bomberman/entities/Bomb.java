@@ -4,13 +4,13 @@ import javafx.scene.image.Image;
 import uet.oop.bomberman.BombermanGame;
 import uet.oop.bomberman.graphics.Sprite;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import static uet.oop.bomberman.BombermanGame.*;
 
 public class Bomb extends AnimatedEntitiy {
-    protected double _timeToExplode = BombermanGame.FPS*2;
+    protected double _timeToExplode = BombermanGame.FPS * 2;
+
+    private boolean move = true;
+    private int size = 4;
 
     public Bomb(int xUnit, int yUnit, Image img) {
         super(xUnit, yUnit, img);
@@ -18,16 +18,23 @@ public class Bomb extends AnimatedEntitiy {
 
     @Override
     public void update() {
-        if (_timeToExplode > 0 && !(BombermanGame.getFlameAt((int)getX(),(int)getY()))) {
+        if (_timeToExplode > 0 && !(BombermanGame.getFlameAt((int) getX(), (int) getY()))) {
             _timeToExplode--;
             chooseImage();
             animate();
+            if (move) canMove();
         } else {
             explode();
         }
     }
 
+    public boolean isMove() {
+        return move;
+    }
 
+    public void canMove() {
+        if (!intersects(bomberman)) move = false;
+    }
 
     public void explode() {
         makeFlames();
@@ -36,27 +43,70 @@ public class Bomb extends AnimatedEntitiy {
 
     public void makeFlames() {
 
-        BombermanGame.flames.add(new Flame((int) getX(), (int) getY(), Sprite.bomb_exploded.getFxImage(), 0));
+        flames.add(new Flame((int) getX(), (int) getY(), Sprite.bomb_exploded.getFxImage(), 0));
+        //top
+        for (int i = 1; i <= size; i++) {
+            if (getWallAt((int) getX(), (int) getY() - i)) break;
+            if (getBrickAt((int) getX(), (int) getY() - i)) {
+                flames.add(new Flame((int) getX(), (int) getY() - i, Sprite.explosion_vertical_top_last.getFxImage(), 1));
+                break;
+            }
+            if (i < size) {
+                flames.add(new Flame((int) getX(), (int) getY() - i, Sprite.explosion_vertical.getFxImage(), 5));
+            } else {
+                flames.add(new Flame((int) getX(), (int) getY() - i, Sprite.explosion_vertical_top_last.getFxImage(), 1));
+            }
+        }
 
-        for (int i = 1; i <= 1; i++) {
-            Flame flametop = new Flame((int) getX(), (int) getY() - i, Sprite.explosion_vertical.getFxImage(), 1);
-            Flame flamedown = new Flame((int) getX(), (int) getY() + i, Sprite.explosion_horizontal.getFxImage(), 2);
-            Flame flameleft = new Flame((int) getX() - i, (int) getY(), Sprite.explosion_horizontal_left_last.getFxImage(), 3);
-            Flame flameright = new Flame((int) getX() + i, (int) getY(), Sprite.explosion_horizontal_right_last.getFxImage(), 4);
-            BombermanGame.flames.add(flametop);
-            BombermanGame.flames.add(flamedown);
-            BombermanGame.flames.add(flameleft);
-            BombermanGame.flames.add(flameright);
+        //down
+        for (int i = 1; i <= size; i++) {
+            if (getWallAt((int) getX(), (int) getY() + i)) break;
+            if (getBrickAt((int) getX(), (int) getY() + i)) {
+                flames.add(new Flame((int) getX(), (int) getY() + i, Sprite.explosion_vertical_down_last.getFxImage(), 2));
+                break;
+            }
+            if (i < size) {
+                flames.add(new Flame((int) getX(), (int) getY() + i, Sprite.explosion_vertical.getFxImage(), 5));
+            } else {
+                flames.add(new Flame((int) getX(), (int) getY() + i, Sprite.explosion_vertical_down_last.getFxImage(), 2));
+            }
+        }
+
+        //left
+        for (int i = 1; i <= size; i++) {
+            if (getWallAt((int) getX() - i, (int) getY())) break;
+            if (getBrickAt((int) getX() - i, (int) getY())) {
+                flames.add(new Flame((int) getX() - i, (int) getY(), Sprite.explosion_horizontal_left_last.getFxImage(), 3));
+                break;
+            }
+            if (i < size) {
+                flames.add(new Flame((int) getX() - i, (int) getY(), Sprite.explosion_horizontal.getFxImage(), 6));
+            } else {
+                flames.add(new Flame((int) getX() - i, (int) getY(), Sprite.explosion_horizontal_left_last.getFxImage(), 3));
+            }
+        }
+
+        //right
+        for (int i = 1; i <= size; i++) {
+            if (getWallAt((int) getX() + i, (int) getY())) break;
+            if (getBrickAt((int) getX() + i, (int) getY())) {
+                flames.add(new Flame((int) getX() + i, (int) getY(), Sprite.explosion_horizontal_right_last.getFxImage(), 4));
+                break;
+            }
+            if (i < size) {
+                flames.add(new Flame((int) getX() + i, (int) getY(), Sprite.explosion_horizontal.getFxImage(), 6));
+            } else {
+                flames.add(new Flame((int) getX() + i, (int) getY(), Sprite.explosion_horizontal_right_last.getFxImage(), 4));
+            }
         }
     }
 
 
     @Override
     public void chooseImage() {
-        Sprite sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, _animate, BombermanGame.FPS/2);
+        Sprite sprite = Sprite.movingSprite(Sprite.bomb, Sprite.bomb_1, Sprite.bomb_2, _animate, BombermanGame.FPS / 2);
         this.setImg(sprite.getFxImage());
     }
-
 
 
 }
