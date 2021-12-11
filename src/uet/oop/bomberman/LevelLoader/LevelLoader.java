@@ -1,6 +1,7 @@
 package uet.oop.bomberman.LevelLoader;
 
 import uet.oop.bomberman.entities.*;
+import uet.oop.bomberman.graphics.ImageLoader;
 import uet.oop.bomberman.graphics.Sprite;
 
 import java.io.BufferedReader;
@@ -49,10 +50,14 @@ public class LevelLoader {
         width = Integer.parseInt(arrays[2]);
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                stillObjects.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                if(level==1) stillObjects.add(new Grass(j, i, Sprite.grass.getFxImage()));
+                if(level==2) stillObjects.add(new Grass(j, i, ImageLoader.Sand.getImage()));
+                if(level==3) stillObjects.add(new Grass(j, i, ImageLoader.Lava_rock.getImage()));
                 switch (list.get(i+1).charAt(j)) {
                     case '#':
-                        stillObjects.add(new Wall(j, i, Sprite.wall.getFxImage()));
+                        if(level == 1) stillObjects.add(new Wall(j, i, Sprite.wall.getFxImage()));
+                        if(level == 2) stillObjects.add(new Wall(j, i, ImageLoader.Water.getImage()));
+                        if(level == 3) stillObjects.add(new Wall(j, i, ImageLoader.Lava.getImage()));
                         break;
                     // Thêm Portal
                     case 'x':
@@ -88,30 +93,18 @@ public class LevelLoader {
                         entities.add(new Minvo(j, i, Sprite.minvo_left1.getFxImage()));
                         break;
 
-            //       Thêm BomItem
-            //        case 'b':
-            //            LayeredEntity layer = new LayeredEntity(x, y,
-            //                    new Grass(x, y, Sprite.grass),
-            //                    new BombItem(x, y, Sprite.powerup_bombs),
-            //                    new Brick(x, y, Sprite.brick));
-            //            _board.addEntity(pos, layer);
-            //            break;
-            //        // Thêm SpeedItem
-            //        case 's':
-            //            layer = new LayeredEntity(x, y,
-            //                    new Grass(x, y, Sprite.grass),
-            //                    new SpeedItem(x, y, Sprite.powerup_speed),
-            //                    new Brick(x, y, Sprite.brick));
-            //            _board.addEntity(pos, layer);
-            //            break;
-            //        // Thêm FlameItem
-            //        case 'f':
-            //            layer = new LayeredEntity(x, y,
-            //                    new Grass(x, y, Sprite.grass),
-            //                    new FlameItem(x, y, Sprite.powerup_flames),
-            //                    new Brick(x, y, Sprite.brick));
-            //            _board.addEntity(pos, layer);
-            //            break;
+                    //Thêm BomItem
+                    case 'b':
+                        entities.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                        break;
+                    // Thêm SpeedItem
+                    case 's':
+                        entities.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                        break;
+                    // Thêm FlameItem
+                    case 'f':
+                        entities.add(new Brick(j, i, Sprite.brick.getFxImage()));
+                        break;
 
                 }
 

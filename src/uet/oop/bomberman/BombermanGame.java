@@ -403,10 +403,10 @@ public class BombermanGame extends Application {
                            text.setStyle("-fx-text-fill: lightgreen");
                            Label text1 = new Label("Score = " + score);
                            text1.setFont(fontsmall);
-                           text1.setStyle("-fx-text-fill: black");
+                           text1.setStyle("-fx-text-fill: white");
                            Label text2 = new Label("Time  = " + time);
                            text2.setFont(fontsmall);
-                           text2.setStyle("-fx-text-fill: black");
+                           text2.setStyle("-fx-text-fill: white");
                            Label text3 = new Label("Score = " + (time + score));
                            text3.setFont(fontmedium);
                            text3.setStyle("-fx-text-fill: yellow");
@@ -416,9 +416,12 @@ public class BombermanGame extends Application {
                            vBox.setTranslateY(stage.getHeight()/5);
                            vBox.setTranslateX(stage.getWidth()/4);
 
-                           if(playOnce) {
+                           vBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7)");
+
+
+                           if(playOnce || level > 3) {
                                root.getChildren().addAll(vBox, buttonReturntomenu(this, stage));
-                           } else root.getChildren().addAll(vBox, buttonReturntomenu(this, stage), buttonRetry(this, stage, root));
+                           } else root.getChildren().addAll(vBox, buttonReturntomenu(this, stage), buttonRetry(this, stage, root, "Next"));
                            stop();
                        }
                        if (lose) {
@@ -428,7 +431,7 @@ public class BombermanGame extends Application {
                            text.setTranslateY(stage.getHeight()/4);
                            text.setTranslateX(stage.getWidth()/3);
                            text.setStyle("-fx-text-fill: red");
-                           root.getChildren().addAll(buttonReturntomenu(this, stage), buttonRetry(this, stage, root), text);
+                           root.getChildren().addAll(buttonReturntomenu(this, stage), buttonRetry(this, stage, root, "Retry"), text);
                            stop();
                    }
                }
@@ -486,9 +489,9 @@ public class BombermanGame extends Application {
         Button play = new Button("Play");
         play.setFont(fontlarge);
         play.setBackground(null);
-        play.setStyle("-fx-text-fill: blue");
-        play.setOnMouseEntered(e -> play.setStyle("-fx-text-fill: orange"));
-        play.setOnMouseExited(e -> play.setStyle("-fx-text-fill: blue"));
+        play.setStyle("-fx-text-fill: blue; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+        play.setOnMouseEntered(e -> play.setStyle("-fx-text-fill: orange; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+        play.setOnMouseExited(e -> play.setStyle("-fx-text-fill: blue; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
         play.setOnAction(e -> {
             score = 0;
             gameScene = true;
@@ -503,18 +506,18 @@ public class BombermanGame extends Application {
         Button selectLevel = new Button("Select level");
         selectLevel.setFont(fontlarge);
         selectLevel.setBackground(null);
-        selectLevel.setStyle("-fx-text-fill: green");
-        selectLevel.setOnMouseEntered(e -> selectLevel.setStyle("-fx-text-fill: cyan"));
-        selectLevel.setOnMouseExited(e -> selectLevel.setStyle("-fx-text-fill: green"));
+        selectLevel.setStyle("-fx-text-fill: green; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+        selectLevel.setOnMouseEntered(e -> selectLevel.setStyle("-fx-text-fill: cyan; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+        selectLevel.setOnMouseExited(e -> selectLevel.setStyle("-fx-text-fill: green; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
         selectLevel.setOnAction(e -> {
             FlowPane levels = new FlowPane(Orientation.VERTICAL);
 
             Button level1 = new Button("Level 1");
             level1.setFont(fontlarge);
             level1.setBackground(null);
-            level1.setStyle("-fx-text-fill: lightgreen");
-            level1.setOnMouseEntered(r -> level1.setStyle("-fx-text-fill: cyan"));
-            level1.setOnMouseExited(r -> level1.setStyle("-fx-text-fill: lightgreen"));
+            level1.setStyle("-fx-text-fill: lightgreen; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+            level1.setOnMouseEntered(r -> level1.setStyle("-fx-text-fill: cyan; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+            level1.setOnMouseExited(r -> level1.setStyle("-fx-text-fill: lightgreen; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
             level1.setOnAction(r -> {
                 score = 0;
                 gameScene = true;
@@ -525,9 +528,9 @@ public class BombermanGame extends Application {
             Button level2 = new Button("Level 2");
             level2.setFont(fontlarge);
             level2.setBackground(null);
-            level2.setStyle("-fx-text-fill: yellow");
-            level2.setOnMouseEntered(r -> level2.setStyle("-fx-text-fill: cyan"));
-            level2.setOnMouseExited(r -> level2.setStyle("-fx-text-fill: yellow"));
+            level2.setStyle("-fx-text-fill: yellow; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+            level2.setOnMouseEntered(r -> level2.setStyle("-fx-text-fill: cyan; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+            level2.setOnMouseExited(r -> level2.setStyle("-fx-text-fill: yellow; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
             level2.setOnAction(r -> {
                 score = 0;
                 gameScene = true;
@@ -538,9 +541,9 @@ public class BombermanGame extends Application {
             Button level3 = new Button("Level 3");
             level3.setFont(fontlarge);
             level3.setBackground(null);
-            level3.setStyle("-fx-text-fill: red");
-            level3.setOnMouseEntered(r -> level3.setStyle("-fx-text-fill: cyan"));
-            level3.setOnMouseExited(r -> level3.setStyle("-fx-text-fill: red"));
+            level3.setStyle("-fx-text-fill: red; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+            level3.setOnMouseEntered(r -> level3.setStyle("-fx-text-fill: cyan; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+            level3.setOnMouseExited(r -> level3.setStyle("-fx-text-fill: red; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
             level3.setOnAction(r -> {
                 score = 0;
                 gameScene = true;
@@ -558,9 +561,9 @@ public class BombermanGame extends Application {
         Button quit = new Button("quit");
         quit.setFont(fontlarge);
         quit.setBackground(null);
-        quit.setStyle("-fx-text-fill: black");
-        quit.setOnMouseEntered(e -> quit.setStyle("-fx-text-fill: red"));
-        quit.setOnMouseExited(e -> quit.setStyle("-fx-text-fill: black"));
+        quit.setStyle("-fx-text-fill: black; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+        quit.setOnMouseEntered(e -> quit.setStyle("-fx-text-fill: red; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+        quit.setOnMouseExited(e -> quit.setStyle("-fx-text-fill: black; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
         quit.setOnAction(e -> {
             Platform.exit();
             System.exit(0);
@@ -630,9 +633,9 @@ public class BombermanGame extends Application {
         Button menu = new Button("Return to menu");
         menu.setFont(fontmedium1);
         menu.setBackground(null);
-        menu.setStyle("-fx-text-fill: black");
-        menu.setOnMouseEntered(e -> menu.setStyle("-fx-text-fill: red"));
-        menu.setOnMouseExited(e -> menu.setStyle("-fx-text-fill: black"));
+        menu.setStyle("-fx-text-fill: white; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+        menu.setOnMouseEntered(e -> menu.setStyle("-fx-text-fill: red; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+        menu.setOnMouseExited(e -> menu.setStyle("-fx-text-fill: white; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )" ));
         menu.setTranslateY(stage.getHeight()-100);
         menu.setOnAction(e -> {
             clear();
@@ -659,13 +662,13 @@ public class BombermanGame extends Application {
         return menu;
     }
 
-    public Button buttonRetry(AnimationTimer timer,Stage stage,Group root) {
-        Button retry = new Button("Retry");
+    public Button buttonRetry(AnimationTimer timer,Stage stage,Group root, String s) {
+        Button retry = new Button(s);
         retry.setFont(fontmedium);
         retry.setBackground(null);
-        retry.setStyle("-fx-text-fill: lightgreen");
-        retry.setOnMouseEntered(e -> retry.setStyle("-fx-text-fill: yellow"));
-        retry.setOnMouseExited(e -> retry.setStyle("-fx-text-fill: lightgreen"));
+        retry.setStyle("-fx-text-fill: green; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )");
+        retry.setOnMouseEntered(e -> retry.setStyle("-fx-text-fill: yellow; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
+        retry.setOnMouseExited(e -> retry.setStyle("-fx-text-fill: lightgreen; -fx-effect: dropshadow( one-pass-box , black , 8 , 0.0 , 2 , 0 )"));
         retry.setTranslateY(stage.getHeight()-100);
         retry.setTranslateX(stage.getWidth()-150);
         retry.setOnAction(e -> {
